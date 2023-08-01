@@ -14,6 +14,7 @@ bash -i <(curl -s )
 
 # Roadmap
 
+- [ ] Dual Mining / Triple Mining
 - [ ] Code rework
 - [ ] Add Watchtower
 
