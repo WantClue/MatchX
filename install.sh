@@ -96,7 +96,7 @@ function onboard() {
     id=$(sed -n 's/.*"gateway_ID": "\(.*\)",/\1/p' $global_conf)
     echo -e "${CYAN}Please enter your Polygon Wallet address to onboard this device to your Wallet${NC}"
     read wallet
-
+    cd /thix
     ./forwarder gateway onboard-and-push $id $wallet
 
 }
@@ -122,7 +122,7 @@ case "$REPLY" in
  2) 
 		clear
 		sleep 1
-		onboarding
+		onboard
  ;;
  3) 
 		clear
