@@ -38,8 +38,7 @@ function install() {
     sed -i 's,/bin/bash,/bin/true,' /opt/MatchX/bin/start_daemon.sh
 
     # Disabling firmware update helper script
-    test -f /opt/MatchX/bin/start_upgrade.sh && mv /opt/MatchX/bin/start_upgrade.sh 
-    /opt/MatchX/bin/start_upgrade_manual.sh
+    test -f /opt/MatchX/bin/start_upgrade.sh && mv /opt/MatchX/bin/start_upgrade.sh /opt/MatchX/bin/start_upgrade_manual.sh
 
     # Downloading and extracting the ThingsIX forwarder
 	cd /home/$USER
@@ -49,11 +48,30 @@ function install() {
     wget https://github.com/ThingsIXFoundation/packet-handling/releases/download/v1.2.1/thingsix-forwarder-linux-arm64-v1.2.1.tar.gz
     tar -xvf thingsix-forwarder-linux-arm64-v1.2.1.tar.gz
     
+
+    echo "${CYAN}Creating LoRa packet forwarder startup script...${NC}"
+    cp /data/global_conf.json /data/global_conf_thix.json
+
+
+    lora_script_content='
+    #!/bin/bash
+
+    cd /opt/MatchX/bin/
+    while true; do
+        ./reset_lgw_both.sh start
+        ./lora_pkt_fwd -c /data/global_conf_thix.json
+        sleep 5
+    done &> /dev/null &
+    '
+    echo "${lora_script_content}" > /opt/MatchX/bin/lora_pkt_fwd.sh
+    chmod +x /opt/MatchX/bin/lora_pkt_fwd.sh
+    grep -q lora_pkt_fwd.sh /etc/init.d/mx190x-startup.sh || sed -ri 's,(/opt/MatchX/web_server/start_server.sh),\1\n    /opt/MatchX/bin/lora_pkt_fwd.sh,' /etc/init.d/mx190x-startup.sh
     echo -e "${CYAN}Download completed now you can proceed with the next step.${NC}"
     echo -e "${CYAN}Run the same command again and choose option number 2 to onboard.${NC}"
+    echo "${CYAN}We need to reboot now.${NC}"
 
-
-
+    sleep 10
+    reboot
 }
 
 function onboard() {
@@ -77,20 +95,6 @@ function onboard() {
         echo "Aborted"
         exit
     fi
-    echo "${CYAN}Creating LoRa packet forwarder startup script...${NC}"
-    cp /data/global_conf.json /data/global_conf_thix.json
-
-
-    lora_script_content='
-    #!/bin/bash
-
-    cd /opt/MatchX/bin/
-    while true; do
-        ./reset_lgw_both.sh start
-        ./lora_pkt_fwd -c /data/global_conf_thix.json
-        sleep 5
-    done &> /dev/null &
-    '
 
     ./forwarder gateway onboard-and-push $id $wallet
 
