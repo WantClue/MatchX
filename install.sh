@@ -93,21 +93,16 @@ function onboard() {
 	fi
     sleep 3
 
-    if whiptail --yesno "Now we will start the forwarder and onboard it to your polygon address." 14 60; then
-            id=$(sed -n 's/.*"gateway_ID": "\(.*\)",/\1/p' $global_conf)
-            echo -e "${CYAN}Please enter your Polygon Wallet address to onboard this device to your Wallet${NC}"
-            read wallet
-    else
-        echo "Aborted"
-        exit
-    fi
+    id=$(sed -n 's/.*"gateway_ID": "\(.*\)",/\1/p' $global_conf)
+    echo -e "${CYAN}Please enter your Polygon Wallet address to onboard this device to your Wallet${NC}"
+    read wallet
 
     ./forwarder gateway onboard-and-push $id $wallet
 
 }
 
+
 echo -e "${BLUE}"
-figlet -f slant "Toolbox"
 echo -e "${YELLOW}================================================================${NC}"
 echo -e "${GREEN}OS: MatchX ${NC}"
 echo -e "${GREEN}Created by: WantClue${NC}"
