@@ -44,7 +44,7 @@ function install() {
     # Downloading and extracting the ThingsIX forwarder
 	cd /home/$USER
     mkdir thix
-    cd /thix
+    cd /home/$USER/thix
     echo -e "${CYAN}Now we download the ThingsIX Forwarder.${NC}"
     wget https://github.com/ThingsIXFoundation/packet-handling/releases/download/v1.2.1/thingsix-forwarder-linux-arm64-v1.2.1.tar.gz
     tar -xvf thingsix-forwarder-linux-arm64-v1.2.1.tar.gz
@@ -97,7 +97,7 @@ function onboard() {
     echo "Your local Id is $id"
     echo -e "${CYAN}Please enter your Polygon Wallet address to onboard this device to your Wallet${NC}"
     read wallet
-    cd /thix
+    cd /home/$USER/thix
     ./forwarder gateway onboard-and-push $id $wallet
 
 }
