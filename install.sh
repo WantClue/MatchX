@@ -10,8 +10,8 @@ CYAN='\033[1;36m'
 NC='\033[0m'
 
 #paths
-crank_conf="/data/gloabl_conf_crankk.json"
-global_conf="/data/gloabl_conf.json"
+crank_conf="/data/global_conf_crankk.json" #keeping this for future crankk uninstallation
+global_conf="/data/global_conf.json"
 thix_conf="/data/global_conf_thix.json"
 reset_id="/opt/MatchX/bin/reset_lgw_both.sh"
 chip_id="/opt/MatchX/bin/chip_id"
@@ -94,6 +94,7 @@ function onboard() {
     sleep 3
 
     id=$(sed -n 's/.*"gateway_ID": "\(.*\)",/\1/p' $global_conf)
+    echo "Your local Id is $id"
     echo -e "${CYAN}Please enter your Polygon Wallet address to onboard this device to your Wallet${NC}"
     read wallet
     cd /thix
