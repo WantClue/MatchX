@@ -16,6 +16,7 @@ reset_id="/opt/MatchX/bin/reset_lgw_both.sh"
 chip_id="/opt/MatchX/bin/chip_id"
 dir_path="/etc/thingsix-forwarder"
 
+
 function install() {
     echo -e "${GREEN}Module: Install ThingsIX${NC}"
 	echo -e "${YELLOW}================================================================${NC}"
@@ -61,14 +62,14 @@ function onboard() {
     sleep 3
 
     if whiptail --yesno "Now we will start the forwarder and onboard it to your polygon address." 14 60; then
-            id=$(grep -Po 'local_id: \K.*' $local_id)
+            id=$(sed -n 's/.*"gateway_ID": "\(.*\)",/\1/p' $global_conf)
             echo -e "${CYAN}Please enter your Polygon Wallet address to onboard this device to your Wallet${NC}"
             read wallet
     else
         echo "Aborted"
         exit
     fi
-    
+
 }
 
 echo -e "${BLUE}"
