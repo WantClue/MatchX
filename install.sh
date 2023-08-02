@@ -101,6 +101,7 @@ function onboard() {
     read wallet
     cd /home/$USER/thix
     ./forwarder >/dev/null 2>&1 &
+    sleep 5
     ./forwarder gateway onboard-and-push $id $wallet
 
 }

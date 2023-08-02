@@ -20,6 +20,7 @@ chmod +x install.sh
 
 # Roadmap
 
+- [ ] Background keepalive forwarder
 - [ ] Dual Mining / Triple Mining
 - [ ] Code rework
 - [ ] Add Watchtower
