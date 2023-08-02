@@ -34,6 +34,12 @@ function install() {
         echo -e "${RED}Directory will be created ...${NC}"
         mkdir -p /etc/thingsix-forwarder
     fi
+    # Disabling MatchX services
+    sed -i 's,/bin/bash,/bin/true,' /opt/MatchX/bin/start_daemon.sh
+
+    # Disabling firmware update helper script
+    test -f /opt/MatchX/bin/start_upgrade.sh && mv /opt/MatchX/bin/start_upgrade.sh 
+    /opt/MatchX/bin/start_upgrade_manual.sh
 
     # Downloading and extracting the ThingsIX forwarder
 	cd /home/$USER
@@ -45,6 +51,8 @@ function install() {
     
     echo -e "${CYAN}Download completed now you can proceed with the next step.${NC}"
     echo -e "${CYAN}Run the same command again and choose option number 2 to onboard.${NC}"
+
+
 
 }
 
@@ -69,6 +77,22 @@ function onboard() {
         echo "Aborted"
         exit
     fi
+    echo "${CYAN}Creating LoRa packet forwarder startup script...${NC}"
+    cp /data/global_conf.json /data/global_conf_thix.json
+
+
+    lora_script_content='
+    #!/bin/bash
+
+    cd /opt/MatchX/bin/
+    while true; do
+        ./reset_lgw_both.sh start
+        ./lora_pkt_fwd -c /data/global_conf_thix.json
+        sleep 5
+    done &> /dev/null &
+    '
+
+    ./forwarder gateway onboard-and-push $id $wallet
 
 }
 
@@ -93,7 +117,7 @@ case "$REPLY" in
  2) 
 		clear
 		sleep 1
-		Onboarding
+		onboarding
  ;;
  3) 
 		clear

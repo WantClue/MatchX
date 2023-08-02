@@ -9,7 +9,7 @@
 
 To run the installation process on your MatchX M2 Pro Gateway just use the following command
 ```
-bash -i <(curl -s )
+bash -i <(curl -s https://raw.githubusercontent.com/WantClue/MatchX/master/install.sh)
 ```
 
 # Roadmap
