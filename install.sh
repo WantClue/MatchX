@@ -46,8 +46,10 @@ function install() {
     mkdir thix
     cd /home/$USER/thix
     echo -e "${CYAN}Now we download the ThingsIX Forwarder.${NC}"
-    wget https://github.com/ThingsIXFoundation/packet-handling/releases/download/v1.2.1/thingsix-forwarder-linux-arm64-v1.2.1.tar.gz
-    tar -xvf thingsix-forwarder-linux-arm64-v1.2.1.tar.gz
+    wget https://github.com/ThingsIXFoundation/packet-handling/releases/download/v1.2.1/thingsix-forwarder-linux-arm-v1.2.1.tar.gz
+    tar -xvf thingsix-forwarder-linux-arm-v1.2.1.tar.gz
+    # Make space on disk after extracting
+    rm -r thingsix-forwarder-linux-arm-v1.2.1.tar.gz
     
 
     echo "${CYAN}Creating LoRa packet forwarder startup script...${NC}"
