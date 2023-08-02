@@ -12,6 +12,7 @@ NC='\033[0m'
 #paths
 crank_conf="/data/gloabl_conf_crankk.json"
 global_conf="/data/gloabl_conf.json"
+thix_conf="/data/global_conf_thix.json"
 reset_id="/opt/MatchX/bin/reset_lgw_both.sh"
 chip_id="/opt/MatchX/bin/chip_id"
 dir_path="/etc/thingsix-forwarder"
@@ -52,6 +53,11 @@ function install() {
     echo "${CYAN}Creating LoRa packet forwarder startup script...${NC}"
     cp /data/global_conf.json /data/global_conf_thix.json
 
+    # Changing the server address and port to localhost for the forwarding process
+    sed -i 's/"server_address": ".*",/"server_address": "127.0.0.1",/' $global_conf_thix
+    sed -i 's/"serv_port_up": [0-9]*,/"serv_port_up": 1680,/' $global_conf_thix
+    sed -i 's/"serv_port_down": [0-9]*,/"serv_port_down": 1680,/' $global_conf_thix
+    
 
     lora_script_content='
     #!/bin/bash
