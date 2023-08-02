@@ -100,6 +100,7 @@ function onboard() {
     echo -e "${CYAN}Please enter your Polygon Wallet address to onboard this device to your Wallet${NC}"
     read wallet
     cd /home/$USER/thix
+    ./forwarder >/dev/null 2>&1 &
     ./forwarder gateway onboard-and-push $id $wallet
 
 }
